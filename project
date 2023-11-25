@@ -34,3 +34,36 @@ accuracy = accuracy_score(y_test, y_pred)
 print(f"\nAccuracy: {accuracy:.2f}")
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
+-----------------------------------------------------------------------------------------------------------
+#Clustering
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.preprocessing import LabelEncoder
+
+
+data = pd.read_csv(r"c:\Users\bobbe\OneDrive\Desktop\usb\mydata2.csv")
+data['native-country'].fillna('Unknown', inplace=True)
+
+label_encoder = LabelEncoder()
+data['marital-status_encoded'] = label_encoder.fit_transform(data['marital-status'])
+data['sex_encoded'] = label_encoder.fit_transform(data['sex'])
+data['native-country_encoded'] = label_encoder.fit_transform(data['native-country'])
+data['agrossincome_encoded'] = label_encoder.fit_transform(data['agrossincome'])
+
+X = data[['age', 'education-num', 'marital-status_encoded', 'sex_encoded', 'hours-per-week', 'native-country_encoded']]
+
+n_clusters = 3
+cluster = AgglomerativeClustering(n_clusters=n_clusters, affinity='euclidean', linkage='ward')
+
+clusters = cluster.fit_predict(X)
+
+data['cluster'] = clusters
+
+print("Cluster Distribution:")
+print(data['cluster'].value_counts())
+
+sns.pairplot(data=data, hue='cluster', vars=['age', 'education-num', 'marital-status_encoded', 'hours-per-week', 'sex_encoded', 'native-country_encoded'], palette='viridis')
+plt.show()
