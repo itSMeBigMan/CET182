@@ -1,0 +1,36 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import accuracy_score, classification_report
+
+
+data_raw = pd.read_csv(r"c:\Users\bobbe\OneDrive\Desktop\usb\mydata2.csv")
+
+print("Raw Data:")
+print(data_raw.head())
+data_raw['native-country'].fillna('Unknown', inplace=True)
+label_encoder = LabelEncoder()
+data_raw['marital-status_encoded'] = label_encoder.fit_transform(data_raw['marital-status'])
+data_raw['sex_encoded'] = label_encoder.fit_transform(data_raw['sex'])
+data_raw['native-country_encoded'] = label_encoder.fit_transform(data_raw['native-country'])
+data_raw['agrossincome_encoded'] = label_encoder.fit_transform(data_raw['agrossincome'])
+
+print("\nEncoded Data:")
+print(data_raw.head())
+
+X = data_raw[['age', 'education-num', 'marital-status_encoded', 'hours-per-week', 'sex_encoded', 'native-country_encoded']]
+y = data_raw['agrossincome_encoded']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+clf = DecisionTreeClassifier()
+
+clf.fit(X_train, y_train)
+
+y_pred = clf.predict(X_test)
+
+accuracy = accuracy_score(y_test, y_pred)
+print(f"\nAccuracy: {accuracy:.2f}")
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
