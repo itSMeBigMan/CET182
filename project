@@ -1,3 +1,4 @@
+#Classification
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
@@ -34,6 +35,58 @@ accuracy = accuracy_score(y_test, y_pred)
 print(f"\nAccuracy: {accuracy:.2f}")
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
+
+#Below are the running output 
+Raw Data:
+   age  education-num       marital-status    sex  hours-per-week  \
+0   49              9   Married-civ-spouse   Male              40   
+1   23             12        Never-married   Male              52   
+2   20             10        Never-married   Male              44   
+3   45             13             Divorced   Male              40   
+4   30             10   Married-civ-spouse   Male              40   
+
+   native-country agrossincome  
+0   United-States        <=50K  
+1   United-States        <=50K  
+2   United-States        <=50K  
+3   United-States        <=50K  
+4   United-States        <=50K  
+
+Encoded Data:
+   age  education-num       marital-status    sex  hours-per-week  \
+0   49              9   Married-civ-spouse   Male              40   
+1   23             12        Never-married   Male              52   
+2   20             10        Never-married   Male              44   
+3   45             13             Divorced   Male              40   
+4   30             10   Married-civ-spouse   Male              40   
+
+   native-country agrossincome  marital-status_encoded  sex_encoded  \
+0   United-States        <=50K                       2            1   
+1   United-States        <=50K                       4            1   
+2   United-States        <=50K                       4            1   
+3   United-States        <=50K                       0            1   
+4   United-States        <=50K                       2            1   
+
+   native-country_encoded  agrossincome_encoded  
+0                      17                     0  
+1                      17                     0  
+2                      17                     0  
+3                      17                     0  
+4                      17                     0  
+
+Accuracy: 0.83
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.86      0.90      0.88        49
+           1       0.72      0.65      0.68        20
+
+    accuracy                           0.83        69
+   macro avg       0.79      0.77      0.78        69
+weighted avg       0.82      0.83      0.82        69
+
+
 -----------------------------------------------------------------------------------------------------------
 #Clustering
 
@@ -67,3 +120,13 @@ print(data['cluster'].value_counts())
 
 sns.pairplot(data=data, hue='cluster', vars=['age', 'education-num', 'marital-status_encoded', 'hours-per-week', 'sex_encoded', 'native-country_encoded'], palette='viridis')
 plt.show()
+
+
+#Below are the running output 
+Cluster Distribution:
+cluster
+0    181
+2     87
+1     74
+Name: count, dtype: int64
+
